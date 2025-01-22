@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="00000000000004-order-seq" author="codecake">
+    <createSequence sequenceName="order_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000004-order" author="codecake">
+    <createTable tableName="`order`">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="public_id" type="CHAR(36)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="status" type="VARCHAR(256)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fk_customer" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="stripe_session_id" type="VARCHAR(256)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_date" type="TIMESTAMP"/>
+      <column name="last_modified_date" type="TIMESTAMP"/>
+    </createTable>
+
+    <addForeignKeyConstraint baseColumnNames="fk_customer"
+                             baseTableName="`order`"
+                             constraintName="fk_user_order_id"
+                             referencedColumnNames="id"
+                             referencedTableName="ecommerce_user"/>
+  </changeSet>
+
+  <changeSet id="00000000000004-ordered-product" author="codecake">
+    <createTable tableName="ordered_product">
+      <column name="fk_order" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fk_product" type="CHAR(36)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="quantity" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="price" type="FLOAT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product_name" type="VARCHAR(256)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="fk_order, fk_product" tableName="ordered_product"/>
+
+    <addForeignKeyConstraint baseColumnNames="fk_product"
+                             baseTableName="ordered_product"
+                             constraintName="fk_ordered_product_constraint"
+                             referencedColumnNames="public_id"
+                             referencedTableName="product"/>
+
+    <addForeignKeyConstraint baseColumnNames="fk_order"
+                             baseTableName="ordered_product"
+                             constraintName="fk_ordered_order_constraint"
+                             referencedColumnNames="id"
+                             referencedTableName="`order`"/>
+  </changeSet>
+
+</databaseChangeLog>
