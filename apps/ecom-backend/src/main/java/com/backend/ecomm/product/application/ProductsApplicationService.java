@@ -1,4 +1,5 @@
 package com.backend.ecomm.product.application;
+import com.backend.ecomm.order.domain.order.aggregate.OrderProductQuantity;
 import com.backend.ecomm.product.domain.aggregate.Category;
 import com.backend.ecomm.product.domain.aggregate.FilterQuery;
 import com.backend.ecomm.product.domain.aggregate.Product;
@@ -7,6 +8,7 @@ import com.backend.ecomm.product.domain.repository.ProductRepository;
 import com.backend.ecomm.product.domain.service.CategoryCRUD;
 import com.backend.ecomm.product.domain.service.ProductCRUD;
 import com.backend.ecomm.product.domain.service.ProductShop;
+import com.backend.ecomm.product.domain.service.ProductUpdater;
 import com.backend.ecomm.product.domain.vo.PublicId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
